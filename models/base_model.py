@@ -21,8 +21,8 @@ class BaseModel:
         dtformat = "%Y-%m-%dT%H:%M:%S.%f"
         if not kwargs:
             self.id = str(uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.created_at = datetime.today()
+            self.updated_at = datetime.today()
             models.storage.new(self)
         else:
             for key, value in kwargs.items():
@@ -31,15 +31,10 @@ class BaseModel:
                 else:
                     self.__dict__[key] = value
 
-    def __str__(self):
-        """Returns the string representation of the object"""
-        classname = self.__class__.__name__
-        return f"[{classname}] ({self.id}) {self.__dict__}"
-
     def save(self):
         """"updates the public instance attribute updated_at -
         with the current datetime"""
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
@@ -52,3 +47,8 @@ class BaseModel:
                 dictionary[key] = value.isoformat()
         dictionary["__class__"] = self.__class__.__name__
         return dictionary
+
+    def __str__(self):
+        """Returns the string representation of the object"""
+        classname = self.__class__.__name__
+        return f"[{classname}] ({self.id}) {self.__dict__}"
