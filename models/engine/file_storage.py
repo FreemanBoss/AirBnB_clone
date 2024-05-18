@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Defines a FileStorage class"""
 import json
-from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -37,8 +36,8 @@ class FileStorage:
         try:
             with (FileStorage.__file_path) as file:
                 dict_obj = json.load(file)
-                for value in dict_obj.values():
-                    cls = value['__class__']
-                    self.new(eval(cls)(**value))
-        except Exception:
+                for o in dict_obj.values():
+                    cls = o['__class__']
+                    self.new(eval(cls)(**o))
+        except FileNotFoundError:
             pass
