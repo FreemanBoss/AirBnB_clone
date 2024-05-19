@@ -4,6 +4,7 @@ import os
 import unittest
 from models.user import User
 from models.engine.file_storage import FileStorage
+import json
 
 
 class TestFileStorage(unittest.TestCase):
@@ -39,8 +40,10 @@ class TestFileStorage(unittest.TestCase):
         self.storage.new(inst_1)
         self.storage.new(inst_2)
         self.storage.save()
-        key = f"{inst_2.__class__.__name__}.{inst_2.id}"
-        self.assertIn(key, self.storage.all())
+        key_1, key_2 = (f"{inst_1.__class__.__name__}.{inst_1.id}",
+                        f"{inst_2.__class__.__name__}.{inst_2.id}")
+        self.assertIn(key_1, self.storage.all())
+        self.assertIn(key_2, self.storage.all())
         self.assertGreaterEqual(len(self.storage.all()), 2)
 
     def test_reload(self):
